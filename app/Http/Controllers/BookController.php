@@ -16,9 +16,9 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($limit)
     {
-        $books = DB::table('books')->orderBy('id','desc')->paginate(10);
+        $books = DB::table('books')->orderBy('id','desc')->paginate($limit);
 
         return response()->json([
             'res' => true,

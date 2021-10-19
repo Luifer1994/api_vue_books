@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/books-list', [BookController::class, 'index']);
+Route::get('/books-list/{limit}', [BookController::class, 'index']);
 
 Route::post('/books-store', [BookController::class, 'store']);
 

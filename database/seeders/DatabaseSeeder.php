@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         //CREAMOS LOS TIPO DE SERVICIO POR DEFECTO YA QUE SON SOLO ESTOS DOS
-        $num = 1000;
+        $num = 100;
         for ($i=1; $i < $num; $i++) {
             DB::table('books')->insert([
                 'name' => 'Libro '. $i,
