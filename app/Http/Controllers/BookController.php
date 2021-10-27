@@ -18,12 +18,11 @@ class BookController extends Controller
      */
     public function index($limit)
     {
-        $books = DB::table('books')->orderBy('id','desc')->paginate($limit);
-
+        $books = Book::select("*")->orderBy("id", "desc")->paginate($limit);
         return response()->json([
             'res' => true,
             'message' => 'ok',
-            'data' => $books
+            'data' => $books->setPath(env('URL_LIST') . $limit)
         ], 200);
     }
 
@@ -36,8 +35,8 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $rules = array(
-            'name' =>'required',
-            'description' =>'required',
+            'name' => 'required',
+            'description' => 'required',
         );
         $validator = Validator::make($request->all(), $rules);
 
@@ -53,7 +52,7 @@ class BookController extends Controller
 
         return response()->json([
             'res' => true,
-            'message' => 'registro exitoso',
+            'message' => 'Registro exitoso',
             'data' => $newBook
         ], 200);
     }
@@ -80,9 +79,31 @@ class BookController extends Controller
     {
         $date =  Date('Y-m-d h:i');
         $book = Book::find($id);
+        if (!$book) {
+            return response()->json([
+                'res' => false,
+                'message' => 'EL libro no esxiste'
+            ], 400);
+        }
+
+        $rules = array(
+            'name' => 'required',
+            'description' => 'required',
+        );
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
         $book->name = $request->name;
         $book->description = $request->description;
         $book->updated_at = $date;
+        $book->update();
+        return response()->json([
+            'res' => true,
+            'message' => 'Registro actualizado con exito',
+            'data' => $book
+        ], 200);
     }
 
     /**
@@ -93,6 +114,18 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $book = Book::find($id);
+        if (!$book){
+            return response()->json([
+                'res' => false,
+                'message' => 'El registro no existe',
+                'data' => $book
+            ], 402);
+        }
+        $book->delete();
+        return response()->json([
+            'res' => true,
+            'message' => 'Registro eliminado con exito'
+        ], 200);
     }
 }

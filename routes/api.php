@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,11 +15,15 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//login
+Route::post('/login', [LoginController::class,'login']);
 
-Route::get('/books-list/{limit}', [BookController::class, 'index']);
 
-Route::post('/books-store', [BookController::class, 'store']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//RUTAS PROTEGIDAS POR SESION
+Route::group(['middleware'=>'auth:api'], function(){
+    Route::get('/books-list/{limit}', [BookController::class, 'index']);
+    Route::post('/books-store', [BookController::class, 'store']);
+    Route::put('/books-update/{id}', [BookController::class, 'update']);
+    Route::delete('/books-delete/{id}', [BookController::class, 'destroy']);
 });
