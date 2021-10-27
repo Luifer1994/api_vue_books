@@ -78,7 +78,11 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $date =  Date('Y-m-d h:i');
+        $book = Book::find($id);
+        $book->name = $request->name;
+        $book->description = $request->description;
+        $book->updated_at = $date;
     }
 
     /**
