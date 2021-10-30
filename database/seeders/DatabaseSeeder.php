@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
     {
          \App\Models\User::factory(1)->create();
 
+         \App\Models\Student::factory(100)->create();
+
         //CREAMOS LOS TIPO DE SERVICIO POR DEFECTO YA QUE SON SOLO ESTOS DOS
         $num = 100;
         for ($i=1; $i < $num; $i++) {

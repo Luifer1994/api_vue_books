@@ -22,7 +22,7 @@ class BookController extends Controller
         return response()->json([
             'res' => true,
             'message' => 'ok',
-            'data' => $books->setPath(env('URL_LIST') . $limit)
+            'data' => $books->setPath(env('URI') . $limit)
         ], 200);
     }
 
